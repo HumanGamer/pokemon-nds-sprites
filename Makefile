@@ -1,5 +1,5 @@
 
-CC=clang
+CC=gcc
 mingwCC=i486-mingw32-gcc
 
 # Warnings are good! Enable all of them. -Wall -Wextra
@@ -21,7 +21,7 @@ endif
 
 # _POSIX_C_SOURCE>=200809 is needed for fmemopen(3)
 CFLAGS=-g -O2 -std=c99 -D_POSIX_C_SOURCE=200809L -fwrapv $(warnings)
-LDFLAGS=-lpng -lm -lz -lgif
+LDFLAGS=-lpng -lm -lz -lgif -static
 
 sources=common.c lzss.c image.c nitro.c narc.c ncgr.c nclr.c ncer.c nanr.c nmcr.c
 objects=$(sources:.c=.o)

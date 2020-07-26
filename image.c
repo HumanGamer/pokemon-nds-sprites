@@ -164,9 +164,10 @@ image_write_gif(struct image *self, FILE *fp)
 
 	ColorMapObject *colors = NULL;
 	GifFileType *gif = NULL;
+	int *errorValue = NULL;
 
 	// Note: this is freed by EGifCloseFile
-	colors = MakeMapObject(self->palette->count, NULL);
+	colors = GifMakeMapObject(self->palette->count, NULL);
 	if (colors == NULL) {
 		goto giferror;
 	}
@@ -180,11 +181,11 @@ image_write_gif(struct image *self, FILE *fp)
 		colors->Colors[i].Green = (int)round(c->g * factor);
 		colors->Colors[i].Blue = (int)round(c->b * factor);
 	}
-
-	EGifSetGifVersion("89a");
-	gif = EGifOpenFileHandle(fd);
+	
+	gif = EGifOpenFileHandle(fd, errorValue);
+	EGifSetGifVersion("89a", gif);
 	if (gif == NULL) {
-		FreeMapObject(colors);
+		GifFreeMapObject(colors);
 		goto giferror;
 	}
 
@@ -206,18 +207,18 @@ image_write_gif(struct image *self, FILE *fp)
 		u8 *row = self->pixels->data + self->dim.width * y;
 		dod(EGifPutLine(gif, row, self->dim.width));
 	}
-	if (EGifCloseFile(gif) != GIF_OK) {
-		PrintGifError();
+	if (EGifCloseFile(gif, errorValue) != GIF_OK) {
+		printf(GifErrorString(errorValue));
 	}
-	FreeMapObject(colors);
+	GifFreeMapObject(colors);
 	return OKAY;
 
 	#undef dod
 
 giferror:
-	PrintGifError();
-	if (gif != NULL && EGifCloseFile(gif) != GIF_OK) {
-		PrintGifError();
+	printf(GifErrorString(errorValue));
+	if (gif != NULL && EGifCloseFile(gif, errorValue) != GIF_OK) {
+		printf(GifErrorString(errorValue));
 	}
 	return FAIL;
 }
@@ -237,9 +238,9 @@ image_gif_new(struct image *self, const char *outfile)
 
 	ColorMapObject *colors = NULL;
 	GifFileType *gif = NULL;
-
+	int *errorValue = NULL; 
 	// Note: this is freed by EGifCloseFile
-	colors = MakeMapObject(self->palette->count, NULL);
+	colors = GifMakeMapObject(self->palette->count, NULL);
 	if (colors == NULL) {
 		goto giferror;
 	}
@@ -254,10 +255,10 @@ image_gif_new(struct image *self, const char *outfile)
 		colors->Colors[i].Blue = (int)round(c->b * factor);
 	}
 
-	EGifSetGifVersion("89a");
-	gif = EGifOpenFileName(outfile, FALSE);
+	DGifGetGifVersion("89a");
+	gif = DGifOpenFileName(outfile, errorValue);
 	if (gif == NULL) {
-		FreeMapObject(colors);
+		GifFreeMapObject(colors);
 		goto giferror;
 	}
 
@@ -269,22 +270,21 @@ image_gif_new(struct image *self, const char *outfile)
 	// loop forever
 	char app[] = "NETSCAPE2.0";
 	char data[] = "\x01\x00\x00";
-	if (EGifPutExtensionFirst(gif, APPLICATION_EXT_FUNC_CODE,
-	                          sizeof(app) - 1, app) != GIF_OK ||
-	    EGifPutExtensionLast(gif, APPLICATION_EXT_FUNC_CODE,
-	                         sizeof(data) - 1, data) != GIF_OK) {
+	if (EGifPutExtensionLeader(gif, APPLICATION_EXT_FUNC_CODE) != GIF_OK ||
+	    EGifPutExtensionTrailer(gif) != GIF_OK) {
 		goto giferror;
 	}
 
 	return gif;
 
 giferror:
-	PrintGifError();
-	if (gif != NULL && EGifCloseFile(gif) != GIF_OK) {
-		PrintGifError();
+	printf(GifErrorString(errorValue));
+	if (gif != NULL && EGifCloseFile(gif, errorValue) != GIF_OK) {
+		printf(GifErrorString(errorValue));
+
 	}
 	if (colors != NULL) {
-		FreeMapObject(colors);
+		GifFreeMapObject(colors);
 	}
 	return NULL;
 }
@@ -323,8 +323,10 @@ image_gif_add_frame(struct image *self, GifFileType *gif, u16 delay)
 int
 image_gif_close(GifFileType *gif)
 {
-	if (EGifCloseFile(gif) != GIF_OK) {
-		PrintGifError();
+	int *errorValue = NULL;
+	if (EGifCloseFile(gif, errorValue) != GIF_OK) {
+		printf(GifErrorString(errorValue));
+
 		return FAIL;
 	}
 
