@@ -40,7 +40,7 @@
 #include "nclr.h"
 #include "ncer.h"
 
-#define FILENAME "pokegra.narc"
+#define FILENAME "poke_icon.narc"
 #define OUTDIR "test"
 
 /******************************************************************************/
@@ -660,37 +660,49 @@ rip_trainers2(void)
 }
 
 static void
-rip_footprint(void)
+rip_icon(void)
 {
 	struct NARC *narc = open_narc(FILENAME);
 
 	struct NCER *ncer = narc_load_file(narc, 4);
 	assert(nitro_get_magic(ncer) == (magic_t)'NCER');
-
-	struct NCGR *ncgr = narc_load_file(narc, 383+5);
-	assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
-
+	
 	struct NCLR *nclr = narc_load_file(narc, 0);
 	assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
+	for (size_t i = 5; i < narc_get_file_count(narc); i++)
+	{
+		char outfile[256] = "";
+		sprintf(outfile, "%s/%d", OUTDIR, i-5);
+		struct NCGR *ncgr = narc_load_file(narc, i);
+		assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
 
-	ncer_dump(ncer, NULL);
+		ncer_dump(ncer, NULL);
 
-	struct dim dim;
-	ncgr_get_dim(ncgr, &dim);
+		struct dim dim;
+		ncgr_get_dim(ncgr, &dim);
 
-	warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+		warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
 
-	struct image image = {
-		.palette = nclr_get_palette(nclr, 0),
-		.pixels = buffer_alloc(16*16),
-		.dim = {16,16},
-	};
+		struct image image = {
+			.palette = nclr_get_palette(nclr, 0),
+			.pixels = buffer_alloc(32*24),
+			.dim = {24,32},
+		};
 
-	struct coords offset = {8, 8};
-	ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+		struct coords offset = {16, 8};
+		ncer_draw_cell(ncer, 0, ncgr, &image, offset);
 
-	char outfile[256] = "out";
-	write_sprite(&image, outfile);
+		
+		write_sprite(&image, outfile);
+		
+		nitro_free(ncgr);
+		FREE(ncgr);
+
+	}
+	nitro_free(ncer);
+	FREE(ncer);
+	nitro_free(nclr);
+	FREE(nclr);
 
 	exit(EXIT_SUCCESS);
 }
@@ -783,13 +795,13 @@ main(int argc, char *argv[])
 	UNUSED(argc);
 	UNUSED(argv);
 
-	list();
+	//list();
 	//rip_sprites();
 	//rip_bw_sprites();
 	//rip_bw_trainers();
 	//rip_trainers();
 	//rip_trainers2();
-	//rip_footprint();
+	rip_icon();
 	//dump_ncer();
 	//render_ncer();
 }
