@@ -1,5 +1,5 @@
 (define filename "pokegra-w.narc")
-(define outdir "scmtest")
+(define outdir "animtedSprites")
 
 (define ENOENT 2)
 (define EEXIST 17)
@@ -23,11 +23,11 @@
                     (callback tick)
                     #f)))))
 
-(let* ((n 525)
+(let* ((n 1) ; n = pokemon #
        (base (* n 20))
        (narc (load-narc filename))
-       (nclr (narc-load-file narc (+ base 19) 'NCLR)) ; shiny
-       (ncgr (narc-load-file narc (+ base 2) 'NCGR))
+       (nclr (narc-load-file narc (+ base 18) 'NCLR)) ; 18 = normal, 19 = shiny
+       (ncgr (narc-load-file narc (+ base 2) 'NCGR)) ; 2 = male, 3 = female
        (ncer (narc-load-file narc (+ base 4) 'NCER))
        (nanr (narc-load-file narc (+ base 5) 'NANR))
        (nmcr (narc-load-file narc (+ base 6) 'NMCR))

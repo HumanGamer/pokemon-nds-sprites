@@ -783,9 +783,9 @@ main(int argc, char *argv[])
 	UNUSED(argc);
 	UNUSED(argv);
 
-	list();
+	//list();
 	//rip_sprites();
-	//rip_bw_sprites();
+	rip_bw_sprites();
 	//rip_bw_trainers();
 	//rip_trainers();
 	//rip_trainers2();
