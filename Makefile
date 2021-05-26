@@ -1,4 +1,3 @@
-
 CC=gcc
 mingwCC=i486-mingw32-gcc
 
@@ -21,7 +20,9 @@ endif
 
 # _POSIX_C_SOURCE>=200809 is needed for fmemopen(3)
 CFLAGS=-g -O2 -std=c99 -D_POSIX_C_SOURCE=200809L -fwrapv $(warnings)
-LDFLAGS=-lpng -lm -lz -lgif -static
+CFLAGS+=`guile-config compile`
+LIBS=`guile-config link`
+LDFLAGS=-lpng -lm -lz -lgif 
 
 sources=common.c lzss.c image.c nitro.c narc.c ncgr.c nclr.c ncer.c nanr.c nmcr.c
 objects=$(sources:.c=.o)
@@ -33,7 +34,7 @@ rip.exe: rip.o $(objects)
 	$(mingwCC) -o $@ $< $(objects) $(CFLAGS) $(LDFLAGS)
 
 ripscript: ripscript.o $(objects)
-	$(CC) -o $@ $< $(objects) $(LDFLAGS) -lguile -pthread
+	$(CC) -o $@ $< $(objects) $(LDFLAGS) -pthread -lguile-2.2 
 
 rip.o: rip.c common.h lzss.h image.h nitro.h narc.h ncgr.h nclr.h ncer.h Makefile
 ripscript.o: ripscript.c common.h image.h nitro.h narc.h ncgr.h nclr.h nanr.h nmcr.h nmar.h Makefile

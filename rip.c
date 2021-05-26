@@ -40,7 +40,7 @@
 #include "nclr.h"
 #include "ncer.h"
 
-#define FILENAME "poke_icon.narc"
+#define FILENAME "pokegra.narc"
 #define OUTDIR "test"
 
 /******************************************************************************/
@@ -797,11 +797,11 @@ main(int argc, char *argv[])
 
 	//list();
 	//rip_sprites();
-	//rip_bw_sprites();
+	rip_bw_sprites();
 	//rip_bw_trainers();
 	//rip_trainers();
 	//rip_trainers2();
-	rip_icon();
+	//rip_icon();
 	//dump_ncer();
 	//render_ncer();
 }
