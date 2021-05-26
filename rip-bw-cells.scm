@@ -1,5 +1,3 @@
-(use-syntax (ice-9 syncase))
-
 (define filename "pokegra-w.narc")
 (define outdir "cells")
 

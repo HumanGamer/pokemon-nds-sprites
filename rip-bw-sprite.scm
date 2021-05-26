@@ -1,6 +1,3 @@
-(use-syntax (ice-9 syncase))
-(use-modules (ice-9 format))
-
 (define filename "pokegra-w.narc")
 (define outdir "scmtest")
 

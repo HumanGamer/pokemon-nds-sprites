@@ -1,4 +1,3 @@
-
 (define filename "pokegra-hg.narc")
 (define outfile "scmtest.png")
 
