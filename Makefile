@@ -1,5 +1,5 @@
 
-CC=clang
+CC=gcc
 mingwCC=i486-mingw32-gcc
 
 # Warnings are good! Enable all of them. -Wall -Wextra
@@ -23,6 +23,12 @@ endif
 CFLAGS=-g -O2 -std=c99 -D_POSIX_C_SOURCE=200809L -fwrapv $(warnings)
 LDFLAGS=-lpng -lm -lz -lgif
 
+# Tell the C compiler where to find <libguile.h>
+CFLAGS+=`guile-config compile`
+
+# Tell the linker what libraries to use and where to find them.
+LIBS=`guile-config link`
+
 sources=common.c lzss.c image.c nitro.c narc.c ncgr.c nclr.c ncer.c nanr.c nmcr.c
 objects=$(sources:.c=.o)
 
@@ -33,7 +39,7 @@ rip.exe: rip.o $(objects)
 	$(mingwCC) -o $@ $< $(objects) $(CFLAGS) $(LDFLAGS)
 
 ripscript: ripscript.o $(objects)
-	$(CC) -o $@ $< $(objects) $(LDFLAGS) -lguile -pthread
+	$(CC) -o $@ $< $(objects) $(LDFLAGS) -lguile-2.2 -pthread
 
 rip.o: rip.c common.h lzss.h image.h nitro.h narc.h ncgr.h nclr.h ncer.h Makefile
 ripscript.o: ripscript.c common.h image.h nitro.h narc.h ncgr.h nclr.h nanr.h nmcr.h nmar.h Makefile
