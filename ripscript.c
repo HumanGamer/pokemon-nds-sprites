@@ -167,7 +167,7 @@ static SCM make_image(SCM s_dim)
 		dim.height = scm_to_int(scm_cadr(s_dim));
 		struct buffer *pixels = buffer_alloc(dim.width * dim.height);
 		if (pixels == NULL) {
-			scm_memory_error("make-image");
+			//scm_memory_error("make-image");
 		}
 		image->pixels = pixels;
 		image->dim = dim;
@@ -254,7 +254,7 @@ static SCM image_set_pixels_from_ncer(SCM obj, SCM s_ncer, SCM s_cell_index, SCM
 	newimage.pixels = buffer_alloc(dim.width * dim.height);
 
 	if (newimage.pixels == NULL) {
-		scm_memory_error("make-image");
+		//scm_memory_error("make-image");
 	}
 
 	if (ncer_draw_cell(ncer, cell_index, ncgr, &newimage, center)) {

@@ -43,15 +43,15 @@
        (base (* n 20))
        (narc (load-narc filename))
        (nclr (narc-load-file narc (+ base (string->number(list-ref args 2))) 'NCLR)) ; 18 = normal, 19 = shiny
-       (ncgr (narc-load-file narc (+ base (+ 2 (string->number(list-ref args 3)))) 'NCGR)) ; 2 = male, 3 = female
-       (ncer (narc-load-file narc (+ base (+ 4 (string->number(list-ref args 3)))) 'NCER))
-       (nanr (narc-load-file narc (+ base (+ 5 (string->number(list-ref args 3)))) 'NANR))
-       (nmcr (narc-load-file narc (+ base (+ 6 (string->number(list-ref args 3)))) 'NMCR))
-       (nmar (narc-load-file narc (+ base (+ 7 (string->number(list-ref args 3)))) 'NMAR))
+       (ncgr (narc-load-file narc (+ base (+ (string->number(list-ref args 3)) (string->number(list-ref args 4)))) 'NCGR)) ; 2 = male, 3 = female
+       (ncer (narc-load-file narc (+ base (+ 4 (string->number(list-ref args 4)))) 'NCER))
+       (nanr (narc-load-file narc (+ base (+ 5 (string->number(list-ref args 4)))) 'NANR))
+       (nmcr (narc-load-file narc (+ base (+ 6 (string->number(list-ref args 4)))) 'NMCR))
+       (nmar (narc-load-file narc (+ base (+ 7 (string->number(list-ref args 4)))) 'NMAR))
        (cell 0)
        (period (nmar-period nmar cell))
        (size '(192 128)))
-  (save-animation (format #f "~a/~a-anim.gif" (string-append outdir (list-ref args 4)) n)
+  (save-animation (format #f "~a/~a.gif" (string-append outdir (list-ref args 5)) n)
                   size nclr period
                   (lambda (tick)
                     (let ((image (make-image size)))
