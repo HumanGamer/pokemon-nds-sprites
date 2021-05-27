@@ -519,6 +519,7 @@ rip_bw_trainers(void)
 static void
 rip_trainers(void)
 {
+	#define FILENAME "trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 2;
@@ -581,6 +582,7 @@ rip_trainers(void)
 static void
 rip_trainers2(void)
 {
+	#define FILENAME "trbgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 5;
@@ -771,20 +773,22 @@ bwrip_icon(void)
 
 		struct image image = {
 			.palette = nclr_get_palette(nclr, 0),
-			.pixels = buffer_alloc(32*24),
-			.dim = {24,32},
+			//.pixels = buffer_alloc(32*24),
+			//.dim = {24,32},
+			.pixels = buffer_alloc(32*64),
+			.dim = {32,64},
 		};
 
 		struct coords offset = {16, 8};
 		struct coords offset2 = {16, 32};
-		ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+		//ncer_draw_cell(ncer, 0, ncgr, &image, offset);
 		//ncer_draw_cell(ncer, 2, ncgr, &image, offset2);
 
-		/*image.pixels = ncgr_get_pixels(ncgr);
+		image.pixels = ncgr_get_pixels(ncgr);
 			if (image.pixels == NULL) {
 				warn("Error ripping %s.", outfile);
 				continue;
-			}*/
+			}
 
 		
 		write_sprite(&image, outfile);
@@ -897,7 +901,37 @@ main(int argc, char *argv[])
 	//rip_trainers2();
 	//rip_footprint();
 	//rip_icon();
-	bwrip_icon();
+	//bwrip_icon();
 	//dump_ncer();
 	//render_ncer();
+	switch(*argv[1]) 
+	{ 
+		case '1': 
+			list();
+			break;
+		case '2': 
+			rip_sprites();
+			break;
+		case '3': 
+			rip_bw_sprites();
+			break;
+		case '4': 
+			rip_bw_trainers();
+			break;
+		case '5': 
+			rip_trainers();
+			break;
+		case '6': 
+			rip_trainers2();
+			break;
+		case '7': 
+			rip_footprint();
+			break;
+		case '8': 
+			rip_icon();
+			break;
+		case '9': 
+			bwrip_icon();
+			break;
+	} 
 }
