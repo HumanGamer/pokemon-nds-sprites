@@ -696,6 +696,112 @@ rip_footprint(void)
 }
 
 static void
+rip_icon(void)
+{
+	#define FILENAME "poke_icon.narc"
+	struct NARC *narc = open_narc(FILENAME);
+
+	struct NCER *ncer = narc_load_file(narc, 4);
+	//assert(nitro_get_magic(ncer) == (magic_t)'NCER');
+	
+	struct NCLR *nclr = narc_load_file(narc, 0);
+	//assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
+	for (size_t i = 5; i < narc_get_file_count(narc); i++)
+	{
+		char outfile[256] = "";
+		sprintf(outfile, "%s/%d", OUTDIR, i-5);
+		struct NCGR *ncgr = narc_load_file(narc, i);
+		//assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
+
+		ncer_dump(ncer, NULL);
+
+		struct dim dim;
+		ncgr_get_dim(ncgr, &dim);
+
+		warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+
+		struct image image = {
+			.palette = nclr_get_palette(nclr, 0),
+			.pixels = buffer_alloc(32*24),
+			.dim = {24,32},
+		};
+
+		struct coords offset = {16, 8};
+		ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+
+		
+		write_sprite(&image, outfile);
+		
+		nitro_free(ncgr);
+		FREE(ncgr);
+
+	}
+	nitro_free(ncer);
+	FREE(ncer);
+	nitro_free(nclr);
+	FREE(nclr);
+
+	exit(EXIT_SUCCESS);
+}
+
+static void
+bwrip_icon(void)
+{
+	#define FILENAME "poke_icon-w.narc"
+	struct NARC *narc = open_narc(FILENAME);
+
+	struct NCER *ncer = narc_load_file(narc, 2);
+	//assert(nitro_get_magic(ncer) == (magic_t)'NCER');
+	
+	struct NCLR *nclr = narc_load_file(narc, 0);
+	//assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
+	for (size_t i = 7; i < narc_get_file_count(narc); i=i+2)
+	{
+		char outfile[256] = "";
+		sprintf(outfile, "%s/%d", OUTDIR, (i-7)/2);
+		struct NCGR *ncgr = narc_load_file(narc, i);
+		//assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
+
+		ncer_dump(ncer, NULL);
+
+		struct dim dim;
+		ncgr_get_dim(ncgr, &dim);
+
+		warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+
+		struct image image = {
+			.palette = nclr_get_palette(nclr, 0),
+			.pixels = buffer_alloc(32*24),
+			.dim = {24,32},
+		};
+
+		struct coords offset = {16, 8};
+		struct coords offset2 = {16, 32};
+		ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+		//ncer_draw_cell(ncer, 2, ncgr, &image, offset2);
+
+		/*image.pixels = ncgr_get_pixels(ncgr);
+			if (image.pixels == NULL) {
+				warn("Error ripping %s.", outfile);
+				continue;
+			}*/
+
+		
+		write_sprite(&image, outfile);
+		
+		nitro_free(ncgr);
+		FREE(ncgr);
+
+	}
+	nitro_free(ncer);
+	FREE(ncer);
+	nitro_free(nclr);
+	FREE(nclr);
+
+	exit(EXIT_SUCCESS);
+}
+
+static void
 dump_ncer(void)
 {
 	struct NCER *ncer = open_nitro("venu.ncer", 'NCER');
@@ -785,11 +891,13 @@ main(int argc, char *argv[])
 
 	//list();
 	//rip_sprites();
-	rip_bw_sprites();
+	//rip_bw_sprites();
 	//rip_bw_trainers();
 	//rip_trainers();
 	//rip_trainers2();
 	//rip_footprint();
+	//rip_icon();
+	bwrip_icon();
 	//dump_ncer();
 	//render_ncer();
 }
