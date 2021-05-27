@@ -1,6 +1,6 @@
 #!/bin/bash
 ./rip 9;
-cd test
+cd pokeIcons
 for i in {0..711}; do
 echo "converting $i to the right format!"
 convert -size 32x64 xc:black $i.bmp

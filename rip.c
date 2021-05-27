@@ -43,6 +43,18 @@
 #define FILENAME "pokegra.narc"
 #define OUTDIR "test"
 
+#define MKDIR(dir) \
+	if (mkdir(OUTDIR "/" dir, 0755)) { \
+		switch (errno) { \
+		case 0: \
+		case EEXIST: \
+			break; \
+		default: \
+			perror("mkdir: " OUTDIR "/" dir); \
+			exit(EXIT_FAILURE); \
+		} \
+	}
+
 /******************************************************************************/
 
 static char magic_buf[MAGIC_BUF_SIZE];
@@ -171,18 +183,6 @@ rip_sprites(void)
 		{"", "shiny"},
 	};
 
-	#define MKDIR(dir) \
-	if (mkdir(OUTDIR "/" dir, 0755)) { \
-		switch (errno) { \
-		case 0: \
-		case EEXIST: \
-			break; \
-		default: \
-			perror("mkdir: " OUTDIR "/" dir); \
-			exit(EXIT_FAILURE); \
-		} \
-	}
-
 	MKDIR("female")
 	MKDIR("shiny")
 	MKDIR("shiny/female")
@@ -284,18 +284,6 @@ rip_bw_sprites(void)
 		{"back", "back/shiny"},
 		{"back/female", "back/shiny/female"},
 	};
-
-	#define MKDIR(dir) \
-	if (mkdir(OUTDIR "/" dir, 0755)) { \
-		switch (errno) { \
-		case 0: \
-		case EEXIST: \
-			break; \
-		default: \
-			perror("mkdir: " OUTDIR "/" dir); \
-			exit(EXIT_FAILURE); \
-		} \
-	}
 
 	MKDIR("")
 	MKDIR("female")
@@ -407,18 +395,6 @@ rip_bw_trainers(void)
 
 	char outfile[256] = "";
 
-	#define MKDIR(dir) \
-	if (mkdir(OUTDIR "/" dir, 0755)) { \
-		switch (errno) { \
-		case 0: \
-		case EEXIST: \
-			break; \
-		default: \
-			perror("mkdir: " OUTDIR "/" dir); \
-			exit(EXIT_FAILURE); \
-		} \
-	}
-
 	MKDIR("")
 	MKDIR("parts")
 
@@ -525,6 +501,8 @@ rip_trainers(void)
 	const int trainer_count = narc_get_file_count(narc) / 2;
 
 	struct image image = {};
+
+	MKDIR("");
 
 	for (int n = 0; n < trainer_count; n++) {
 		sprintf(outfile, "%s/%d", OUTDIR, n);
@@ -664,6 +642,8 @@ rip_trainers2(void)
 static void
 rip_footprint(void)
 {
+	MKDIR("");
+
 	struct NARC *narc = open_narc(FILENAME);
 
 	struct NCER *ncer = narc_load_file(narc, 4);
@@ -700,6 +680,9 @@ rip_footprint(void)
 static void
 rip_icon(void)
 {
+
+	MKDIR("");
+
 	#define FILENAME "poke_icon.narc"
 	struct NARC *narc = open_narc(FILENAME);
 
@@ -750,6 +733,10 @@ static void
 bwrip_icon(void)
 {
 	#define FILENAME "poke_icon-w.narc"
+	#define OUTDIR "pokeIcons"
+
+	MKDIR("");
+
 	struct NARC *narc = open_narc(FILENAME);
 
 	struct NCER *ncer = narc_load_file(narc, 2);
