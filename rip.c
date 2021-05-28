@@ -776,7 +776,7 @@ bwrip_icon(void)
 				warn("Error ripping %s.", outfile);
 				continue;
 			}
-
+		image.palette = nclr_get_palette(nclr, 0);
 		
 		write_sprite(&image, outfile);
 		

@@ -1,5 +1,6 @@
 #!/bin/bash
 ./rip 9;
+python3 BWIconPalette.py;
 cd pokeIcons
 for i in {0..711}; do
 echo "converting $i to the right format!"
