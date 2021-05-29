@@ -390,6 +390,8 @@ rip_bw_sprites(void)
 static void
 rip_bw_trainers(void)
 {
+	#define OUTDIR "./Out/TrainerTest"
+	#define FILENAME "./Resources/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	struct NCER *ncer = open_nitro("bw-trainer.ncer", 'NCER');
 
@@ -400,7 +402,7 @@ rip_bw_trainers(void)
 
 	struct image image = {};
 
-	for (int n = 0; n <= 94; n++) {
+	for (int n = 0; n <= 188; n++) {
 		printf("%d\n", n);
 		struct NCLR *normal_nclr = narc_load_file(narc, n*8 + 7);
 
