@@ -40,7 +40,7 @@
 #include "nclr.h"
 #include "ncer.h"
 
-#define FILENAME "pokegra.narc"
+#define FILENAME "./Resources/pokegra.narc"
 #define OUTDIR "test"
 
 #define MKDIR(dir) \
@@ -495,7 +495,7 @@ rip_bw_trainers(void)
 static void
 rip_trainers(void)
 {
-	#define FILENAME "trfgra.narc"
+	#define FILENAME "./Resources/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 2;
@@ -560,7 +560,7 @@ rip_trainers(void)
 static void
 rip_trainers2(void)
 {
-	#define FILENAME "trbgra.narc"
+	#define FILENAME "./Resources/trbgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 5;
@@ -683,7 +683,7 @@ rip_icon(void)
 
 	MKDIR("");
 
-	#define FILENAME "poke_icon.narc"
+	#define FILENAME "./Resources/poke_icon.narc"
 	struct NARC *narc = open_narc(FILENAME);
 
 	struct NCER *ncer = narc_load_file(narc, 4);
@@ -732,7 +732,7 @@ rip_icon(void)
 static void
 bwrip_icon(void)
 {
-	#define FILENAME "poke_icon-w.narc"
+	#define FILENAME "./Resources/poke_icon-w.narc"
 	#define OUTDIR "pokeIcons"
 
 	MKDIR("");
@@ -795,7 +795,7 @@ bwrip_icon(void)
 static void
 bw2rip_icon(void)
 {
-	#define FILENAME "poke_icon-w.narc"
+	#define FILENAME "./Resources/poke_icon-w.narc"
 	#define OUTDIR "pokeIcons"
 
 	MKDIR("");
