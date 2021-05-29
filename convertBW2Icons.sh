@@ -1,9 +1,9 @@
 #!/bin/bash
-./rip 8;
-python3 BWIconPalette.py 1;
+./rip 9;
+python3 BWIconPalette.py 2;
 cd pokeIcons
 #bw has 711, bw2 has 750
-for i in {0..711}; do
+for i in {0..750}; do
 echo "converting $i to the right format!"
 convert -size 32x64 xc:black $i.bmp
 convert -extract 32x8+0+0 $i.png tmp.bmp
