@@ -1,5 +1,5 @@
 (define filename "Resources/pokegra-w.narc")
-(define outdir "scmtest")
+(define outdir "./Out/scmtest")
 
 (define ENOENT 2)
 (define EEXIST 17)

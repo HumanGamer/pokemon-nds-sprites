@@ -41,7 +41,7 @@
 #include "ncer.h"
 
 #define FILENAME "./Resources/pokegra.narc"
-#define OUTDIR "test"
+#define OUTDIR "./Out/test"
 
 #define MKDIR(dir) \
 	if (mkdir(OUTDIR "/" dir, 0755)) { \
@@ -733,7 +733,7 @@ static void
 bwrip_icon(void)
 {
 	#define FILENAME "./Resources/poke_icon-w.narc"
-	#define OUTDIR "pokeIcons"
+	#define OUTDIR "./Out/pokeIcons"
 
 	MKDIR("");
 
@@ -796,7 +796,7 @@ static void
 bw2rip_icon(void)
 {
 	#define FILENAME "./Resources/poke_icon-w.narc"
-	#define OUTDIR "pokeIcons"
+	#define OUTDIR "./Out/pokeIcons"
 
 	MKDIR("");
 

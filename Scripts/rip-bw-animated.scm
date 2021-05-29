@@ -1,5 +1,5 @@
 (define filename "Resources/pokegra-w.narc")
-(define outdir "animtedSprites")
+(define outdir "./Out/animtedSprites")
 
 (define ENOENT 2)
 (define EEXIST 17)

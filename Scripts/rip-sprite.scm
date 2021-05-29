@@ -1,5 +1,5 @@
 (define filename "Resources/pokegra-hg.narc")
-(define outfile "scmtest.png")
+(define outfile "./Out/scmtest.png")
 
 (let* ((narc (load-narc filename)))
   (let* ((ncgr (narc-load-file narc 8 'NCGR))

@@ -2,7 +2,7 @@
 cd ..
 ./rip 8;
 python3 Scripts/BWIconPalette.py 1;
-cd pokeIcons
+cd ./Out/pokeIcons
 #bw has 711, bw2 has 750
 for i in {0..711}; do
 echo "converting $i to the right format!"

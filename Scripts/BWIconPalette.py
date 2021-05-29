@@ -31,10 +31,10 @@ if sys.argv[1] == '2':
 #    im.save("pokeIcons/"+str(i)+".png")
 
 for i in toPal1:
-    im = Image.open("./pokeIcons/"+str(i)+".png")
+    im = Image.open("./Out/pokeIcons/"+str(i)+".png")
     im.putpalette(pal1.getpalette())
-    im.save("./pokeIcons/"+str(i)+".png")
+    im.save("./Out/pokeIcons/"+str(i)+".png")
 for i in toPal2:
-    im = Image.open("./pokeIcons/"+str(i)+".png")
+    im = Image.open("./Out/pokeIcons/"+str(i)+".png")
     im.putpalette(pal2.getpalette())
-    im.save("./pokeIcons/"+str(i)+".png")
+    im.save("./Out/pokeIcons/"+str(i)+".png")
