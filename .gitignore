@@ -1,5 +1,9 @@
 *.narc
 
+rip
+ripscript
+rip.exe
+
 Out/**/*.png
 Out/**/*.gif
 
