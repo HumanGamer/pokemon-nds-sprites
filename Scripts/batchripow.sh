@@ -66,6 +66,7 @@ dorip () {
 #bw = 6-763
 #bw2 = 7-974
 for a in {0..974}; do
+    [ -z "$1" ] && continue;
     [ "$1" = "1" ] && [ "$a" -gt 375 ] &&  continue;
     [ "$1" = "2" ] && [ "$a" -eq 393 ] &&  continue;
     [ "$1" = "2" ] && [ "$a" -gt 420 ] &&  continue;
@@ -82,6 +83,11 @@ for a in {0..974}; do
     fi
     dorip $a false
 done;
+
+if [ -z "$1" ]
+then
+    echo "You did not specify a number when running this! See README.md for usage information!"
+fi
 
 cd ../../../../
 rm -rf Out/OverworldSprites
