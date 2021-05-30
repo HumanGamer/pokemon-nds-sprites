@@ -40,9 +40,6 @@
 #include "nclr.h"
 #include "ncer.h"
 
-#define FILENAME "./Resources/Narcs/pokegra.narc"
-#define OUTDIR "./Out/test"
-
 #define MKDIR(dir) \
 	if (mkdir(OUTDIR "/" dir, 0755)) { \
 		switch (errno) { \
@@ -127,6 +124,8 @@ open_nitro(const char *filename, magic_t magic)
 static int
 list(void)
 {
+	#define FILENAME "./Resources/Narcs/pokegra.narc"
+	#define OUTDIR "./Out/test"
 	struct NARC *narc;
 	struct nitro *chunk;
 
@@ -170,6 +169,8 @@ write_sprite(struct image *image, char *outfile)
 static void
 rip_sprites(void)
 {
+	#define FILENAME "./Resources/Narcs/pokegra.narc"
+	#define OUTDIR "./Out/test"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 
@@ -392,7 +393,7 @@ rip_bw_sprites(void)
 static void
 rip_bw_trainers(void)
 {
-	#define OUTDIR "./Out/TrainerTest"
+	#define OUTDIR "./Out/Trainers"
 	#define FILENAME "./Resources/Narcs/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	struct NCER *ncer = open_nitro("./Resources/bw-trainer.ncer", 'NCER');
@@ -404,7 +405,7 @@ rip_bw_trainers(void)
 
 	struct image image = {};
 
-	for (int n = 0; n <= 188; n++) {
+	for (int n = 0; n <= 187; n++) {
 		printf("%d\n", n);
 		struct NCLR *normal_nclr = narc_load_file(narc, n*8 + 7);
 
@@ -499,6 +500,7 @@ rip_bw_trainers(void)
 static void
 rip_trainers(void)
 {
+	#define OUTDIR "./Out/test"
 	#define FILENAME "./Resources/Narcs/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
@@ -565,6 +567,7 @@ static void
 rip_trainers2(void)
 {
 	#define FILENAME "./Resources/Narcs/trbgra.narc"
+	#define OUTDIR "./Out/test"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 5;
@@ -646,37 +649,46 @@ rip_trainers2(void)
 static void
 rip_footprint(void)
 {
+	#define FILENAME "./Resources/Narcs/pokefoot.narc"
+	#define OUTDIR "./Out/Footprints"
 	MKDIR("");
 
 	struct NARC *narc = open_narc(FILENAME);
 
-	struct NCER *ncer = narc_load_file(narc, 4);
+	struct NCER *ncer = narc_load_file(narc, 2);
 	assert(nitro_get_magic(ncer) == (magic_t)'NCER');
-
-	struct NCGR *ncgr = narc_load_file(narc, 383+5);
-	assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
 
 	struct NCLR *nclr = narc_load_file(narc, 0);
 	assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
 
-	ncer_dump(ncer, NULL);
+	for (size_t i = 3; i < narc_get_file_count(narc); i++){
 
-	struct dim dim;
-	ncgr_get_dim(ncgr, &dim);
+		char outfile[256] = "";
+		sprintf(outfile, "%s/%d", OUTDIR, i-3);
 
-	warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+		struct NCGR *ncgr = narc_load_file(narc, i);
+		assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
 
-	struct image image = {
-		.palette = nclr_get_palette(nclr, 0),
-		.pixels = buffer_alloc(16*16),
-		.dim = {16,16},
-	};
+		ncer_dump(ncer, NULL);
 
-	struct coords offset = {8, 8};
-	ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+		struct dim dim;
+		ncgr_get_dim(ncgr, &dim);
 
-	char outfile[256] = "out";
-	write_sprite(&image, outfile);
+		warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+
+		struct image image = {
+			.palette = nclr_get_palette(nclr, 0),
+			.pixels = buffer_alloc(16*16),
+			.dim = {16,16},
+		};
+
+		struct coords offset = {8, 8};
+		ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+
+		write_sprite(&image, outfile);
+	}
+
+	
 
 	exit(EXIT_SUCCESS);
 }
@@ -688,6 +700,7 @@ rip_icon(void)
 	MKDIR("");
 
 	#define FILENAME "./Resources/Narcs/poke_icon.narc"
+	#define OUTDIR "./Out/test"
 	struct NARC *narc = open_narc(FILENAME);
 
 	struct NCER *ncer = narc_load_file(narc, 4);
