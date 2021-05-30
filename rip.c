@@ -270,6 +270,8 @@ rip_sprites(void)
 static void
 rip_bw_sprites(void)
 {
+	#define FILENAME "./Resources/pokegra-w.narc"
+	#define OUTDIR "./Out/Sprites"
 	struct NARC *narc = open_narc(FILENAME);
 	struct NCER *ncer = open_nitro("bw-pokemon.ncer", 'NCER');
 
@@ -984,6 +986,9 @@ main(int argc, char *argv[])
 			break;
 		case '9': 
 			bw2rip_icon();
+			break;
+		default:
+			list();
 			break;
 	} 
 }
