@@ -1,11 +1,22 @@
 #!/bin/bash
 cd ..
-./rip 8;
-python3 Scripts/BWIconPalette.py 1;
+
+NUM=711
+
+if [ "$1" = "2" ]; then
+    NUM=750;
+    ./rip 9;
+    python3 Scripts/BWIconPalette.py 2;
+else
+    ./rip 8;
+    python3 Scripts/BWIconPalette.py 1;
+fi
+
 cd ./Out/pokeIcons
 #bw has 711, bw2 has 750
-for i in {0..711}; do
-echo "converting $i to the right format!"
+echo "converting..."
+for i in $(seq 0 $NUM); do
+echo -e "\e[1A\e[K$i/$NUM converted to the right format!"
 convert -size 32x64 xc:black $i.bmp
 convert -extract 32x8+0+0 $i.png tmp.bmp
 composite -compose atop -geometry +0+0 tmp.bmp $i.bmp $i.bmp
@@ -31,3 +42,5 @@ convert $i.bmp $i.png
 rm -f tmp.bmp
 rm -f $i.bmp
 done;
+
+echo "converting done";

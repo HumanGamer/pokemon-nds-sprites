@@ -755,12 +755,12 @@ bwrip_icon(void)
 		struct NCGR *ncgr = narc_load_file(narc, i);
 		//assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
 
-		ncer_dump(ncer, NULL);
+		//ncer_dump(ncer, NULL);
 
 		struct dim dim;
 		ncgr_get_dim(ncgr, &dim);
 
-		warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+		//warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
 
 		struct image image = {
 			.palette = nclr_get_palette(nclr, 0),
@@ -818,12 +818,12 @@ bw2rip_icon(void)
 		struct NCGR *ncgr = narc_load_file(narc, i);
 		//assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
 
-		ncer_dump(ncer, NULL);
+		//ncer_dump(ncer, NULL);
 
 		struct dim dim;
 		ncgr_get_dim(ncgr, &dim);
 
-		warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+		//warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
 
 		struct image image = {
 			.palette = nclr_get_palette(nclr, 0),
