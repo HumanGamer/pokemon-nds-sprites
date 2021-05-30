@@ -18,13 +18,23 @@ Uses:
 
 
 Requirements for all total:
+
 Bash?
+
 Java 12+
+
 Python3
+
 gcc
+
 Guile2.2 (or 3.0 for mac, change the makefile)
+
 Libpng
+
 Libgif
+
 More?
+
+
 
 More documentation on usage later.
