@@ -8,6 +8,7 @@ This is a collection of scripts originally created by magical, and edited by Ayu
 These are tested on Ubuntu 20.0.4 and Macos 11.0.
 
 Uses:
+
 [Apicula](https://github.com/scurest/apicula) for .BTX0->.Png conversion
 
 [Narctowl](https://github.com/turtleisaac/Narctowl) for .narc unpacking, first step before .BTX0->.Png conversion.
