@@ -1,5 +1,5 @@
 # pokemon-nds-sprites
-Sprite ripper for the fourth- and fifth-generation Pokémon games (D/P/Pt/HG/SS/B/W/B2/W2)
+Sprite rip tool collection for the fourth- and fifth-generation Pokémon games (D/P/Pt/HG/SS/B/W/B2/W2)
 
 
 This is a collection of scripts originally created by magical, and edited by Ayukito. New scripts have also been added by Ayukito.
