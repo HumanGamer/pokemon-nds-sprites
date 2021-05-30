@@ -1,5 +1,8 @@
 *.narc
 
+Out/**/*.png
+Out/**/*.gif
+
 # Prerequisites
 *.d
 
