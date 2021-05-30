@@ -3,7 +3,9 @@ Sprite rip tool collection for the fourth- and fifth-generation Pokémon games (
   
 This is a collection of scripts originally created by magical, and edited by Ayukito. New scripts have also been added by Ayukito   
   
-These are tested on Ubuntu 20.0.4 and Macos 11.4  
+See [wiki](https://github.com/Ayukito/pokemon-nds-sprites/wiki) page for more information, more documentation on usage later  
+  
+These are tested on Ubuntu 20.0.4 and occasionally Macos 11.4  
   
 Uses:  
 [Apicula](https://github.com/scurest/apicula) for .BTX0->.Png conversion  
@@ -22,5 +24,3 @@ Guile2.2 (or 3.0 for mac, change the makefile)
 Libpng  
 Libgif  
 More?  
-  
-See [wiki](https://github.com/Ayukito/pokemon-nds-sprites/wiki) page for more information, more documentation on usage later
