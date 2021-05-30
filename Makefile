@@ -29,31 +29,19 @@ CFLAGS+=`guile-config compile`
 # Tell the linker what libraries to use and where to find them.
 LIBS=`guile-config link`
 
-sources=common.c lzss.c image.c nitro.c narc.c ncgr.c nclr.c ncer.c nanr.c nmcr.c
+sources=./src/common.c ./src/lzss.c ./src/image.c ./src/nitro.c ./src/narc.c ./src/ncgr.c ./src/nclr.c ./src/ncer.c ./src/nanr.c ./src/nmcr.c
 objects=$(sources:.c=.o)
 
-rip: rip.o $(objects)
+rip: ./src/rip.o $(objects)
 	$(CC) -o $@ $< $(objects) $(CFLAGS) $(LDFLAGS)
 
-rip.exe: rip.o $(objects)
+rip.exe: ./src/rip.o $(objects)
 	$(mingwCC) -o $@ $< $(objects) $(CFLAGS) $(LDFLAGS)
 
-ripscript: ripscript.o $(objects)
+ripscript: ./src/ripscript.o $(objects)
 	$(CC) -o $@ $< $(objects) $(LDFLAGS) -lguile-2.2 -pthread
 
-rip.o: rip.c common.h lzss.h image.h nitro.h narc.h ncgr.h nclr.h ncer.h Makefile
-ripscript.o: ripscript.c common.h image.h nitro.h narc.h ncgr.h nclr.h nanr.h nmcr.h nmar.h Makefile
-common.o: common.c common.h Makefile
-lzss.o: lzss.c lzss.h common.h Makefile
-nitro.o: nitro.c nitro.h narc.h ncgr.h nclr.h ncer.h nanr.h nmcr.h common.h Makefile
-narc.o: narc.c narc.h nitro.h common.h Makefile
-ncgr.o: ncgr.c ncgr.h nitro.h common.h Makefile
-nclr.o: nclr.c nclr.h nitro.h common.h Makefile
-ncer.o: ncer.c ncer.h nitro.h ncgr.h image.h common.h Makefile
-nanr.o: nanr.c nanr.h nmar.h nitro.h ncgr.h ncer.h image.h common.h Makefile
-nmcr.o: nmcr.c nmcr.h nitro.h ncgr.h ncer.h nanr.h image.h common.h Makefile
-image.o: image.c image.h common.h
-
-.PHONY: clean
+rip.o: ./src/rip.c ./src/common.h ./src/lzss.h ./src/image.h ./src/nitro.h ./src/narc.h ./src/ncgr.h ./src/nclr.h ./src/ncer.h Makefile
+ripscript.o: ./src/ripscript.c ./src/common.h ./src/image.h ./src/nitro.h ./src/narc.h ./src/ncgr.h ./src/nclr.h ./src/nanr.h ./src/nmcr.h ./src/nmar.h Makefile
 clean:
-	rm rip.o ripscript.o $(objects)
+	rm ./src/rip.o ./src/ripscript.o $(objects)
