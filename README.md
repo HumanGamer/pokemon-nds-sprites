@@ -7,6 +7,14 @@ This is a collection of scripts originally created by magical, and edited by Ayu
 
 These are tested on Ubuntu 20.0.4 and Macos 11.0.
 
+Uses:
+[Apicula](https://github.com/scurest/apicula) for .BTX0->.Png conversion
+
+[Narctowl](https://github.com/turtleisaac/Narctowl) for .narc unpacking, first step before .BTX0->.Png conversion.
+*Regarding the above, I could totally try to figure out how the included narc library written in C works, but I hate C and prefer Python & bash.*
+*Also, the NarcTools reimps in Python don't run on Linux, and the original(?) is written for Windows*
+
+
 Requirements for all total:
 Bash?
 Java 12+
