@@ -273,7 +273,7 @@ rip_bw_sprites(void)
 	#define FILENAME "./Resources/Narcs/pokegra-w.narc"
 	#define OUTDIR "./Out/Sprites"
 	struct NARC *narc = open_narc(FILENAME);
-	struct NCER *ncer = open_nitro("bw-pokemon.ncer", 'NCER');
+	struct NCER *ncer = open_nitro("./Resources/bw-pokemon.ncer", 'NCER');
 
 	char outfile[256] = "";
 
@@ -395,7 +395,7 @@ rip_bw_trainers(void)
 	#define OUTDIR "./Out/TrainerTest"
 	#define FILENAME "./Resources/Narcs/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
-	struct NCER *ncer = open_nitro("bw-trainer.ncer", 'NCER');
+	struct NCER *ncer = open_nitro("./Resources/bw-trainer.ncer", 'NCER');
 
 	char outfile[256] = "";
 
