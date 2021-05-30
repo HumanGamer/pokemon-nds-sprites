@@ -1,5 +1,4 @@
 #!/bin/bash
-#todo: tables that we know do have female forms so we can avoid error spam in the console..
 echo "ripping!"
 #bw has 711, bw2 has 750
 
