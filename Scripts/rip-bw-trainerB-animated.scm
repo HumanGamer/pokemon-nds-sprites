@@ -1,4 +1,4 @@
-(define filename "Resources/trbgra.narc")
+(define filename "Resources/Narcs/trbgra.narc")
 (define outdir "./Out/animtedTrainerBack")
 
 (define ENOENT 2)

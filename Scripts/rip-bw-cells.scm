@@ -1,4 +1,4 @@
-(define filename "Resources/pokegra-w.narc")
+(define filename "Resources/Narcs/pokegra-w.narc")
 (define outdir "./Out/cells")
 
 (define ENOENT 2)

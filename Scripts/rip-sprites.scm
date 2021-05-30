@@ -1,4 +1,4 @@
-(define filename "Resources/pokegra-hg.narc")
+(define filename "Resources/Narcs/pokegra-hg.narc")
 (define outdir "./Out/scmtest")
 
 (define dirs '(("back/female" "back/female/shiny")

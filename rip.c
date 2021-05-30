@@ -40,7 +40,7 @@
 #include "nclr.h"
 #include "ncer.h"
 
-#define FILENAME "./Resources/pokegra.narc"
+#define FILENAME "./Resources/Narcs/pokegra.narc"
 #define OUTDIR "./Out/test"
 
 #define MKDIR(dir) \
@@ -270,7 +270,7 @@ rip_sprites(void)
 static void
 rip_bw_sprites(void)
 {
-	#define FILENAME "./Resources/pokegra-w.narc"
+	#define FILENAME "./Resources/Narcs/pokegra-w.narc"
 	#define OUTDIR "./Out/Sprites"
 	struct NARC *narc = open_narc(FILENAME);
 	struct NCER *ncer = open_nitro("bw-pokemon.ncer", 'NCER');
@@ -393,7 +393,7 @@ static void
 rip_bw_trainers(void)
 {
 	#define OUTDIR "./Out/TrainerTest"
-	#define FILENAME "./Resources/trfgra.narc"
+	#define FILENAME "./Resources/Narcs/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	struct NCER *ncer = open_nitro("bw-trainer.ncer", 'NCER');
 
@@ -499,7 +499,7 @@ rip_bw_trainers(void)
 static void
 rip_trainers(void)
 {
-	#define FILENAME "./Resources/trfgra.narc"
+	#define FILENAME "./Resources/Narcs/trfgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 2;
@@ -564,7 +564,7 @@ rip_trainers(void)
 static void
 rip_trainers2(void)
 {
-	#define FILENAME "./Resources/trbgra.narc"
+	#define FILENAME "./Resources/Narcs/trbgra.narc"
 	struct NARC *narc = open_narc(FILENAME);
 	char outfile[256] = "";
 	const int trainer_count = narc_get_file_count(narc) / 5;
@@ -687,7 +687,7 @@ rip_icon(void)
 
 	MKDIR("");
 
-	#define FILENAME "./Resources/poke_icon.narc"
+	#define FILENAME "./Resources/Narcs/poke_icon.narc"
 	struct NARC *narc = open_narc(FILENAME);
 
 	struct NCER *ncer = narc_load_file(narc, 4);
@@ -736,7 +736,7 @@ rip_icon(void)
 static void
 bwrip_icon(void)
 {
-	#define FILENAME "./Resources/poke_icon-w.narc"
+	#define FILENAME "./Resources/Narcs/poke_icon-w.narc"
 	#define OUTDIR "./Out/pokeIcons"
 
 	MKDIR("");
@@ -799,7 +799,7 @@ bwrip_icon(void)
 static void
 bw2rip_icon(void)
 {
-	#define FILENAME "./Resources/poke_icon-w.narc"
+	#define FILENAME "./Resources/Narcs/poke_icon-w.narc"
 	#define OUTDIR "./Out/pokeIcons"
 
 	MKDIR("");

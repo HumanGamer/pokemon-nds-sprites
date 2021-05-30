@@ -1,4 +1,4 @@
-(define filename "Resources/pokegra-hg.narc")
+(define filename "Resources/Narcs/pokegra-hg.narc")
 (define outfile "./Out/scmtest.png")
 
 (let* ((narc (load-narc filename)))
