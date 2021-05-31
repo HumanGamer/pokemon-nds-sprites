@@ -33,8 +33,10 @@ dorip () {
         #echo $entry
         arrSprites+=($entry)
     done;
-
-    #echo "${arrSprites[2]}"
+    arrSprites=($(for l in ${arrSprites[@]}; do echo $l; done | sort -t _ -k 2 -g))
+    # Above will go 1..2..3..4..9..10
+    # Instead of 1..10..2..3..4..9
+    #echo "${arrSprites[]}"
     wid=$(identify -format '%w' ${arrSprites[0]})
     hei=$(identify -format '%h' ${arrSprites[0]})
     len=$((${#arrSprites[@]} * $hei))
