@@ -873,6 +873,77 @@ bw2rip_icon(void)
 }
 
 static void
+rip_item_icon(void)
+{
+	#define FILENAME "./Resources/Narcs/item_icon.narc"
+	#define OUTDIR "./Out/itemIcons"
+
+	MKDIR("");
+
+	struct NARC *narc = open_narc(FILENAME);
+
+	struct NCER *ncer = narc_load_file(narc, 1);
+	assert(nitro_get_magic(ncer) == (magic_t)'NCER');
+	
+	struct NCLR *nclr = narc_load_file(narc, 3);
+	assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
+
+	struct NCGR *ncgr = narc_load_file(narc, 2);
+	assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
+
+	//open next file,
+	//check if image.
+	//if image, recursively check next files for palette and save image with it
+	//stop when next file is image, repeat
+
+	//void *test = narc_load_file(narc, i);
+	//	if (nitro_get_magic(test) == (magic_t)'NCGR'){
+	//		printf("test");
+	int item = 0;
+	for (size_t i = 2; i < narc_get_file_count(narc); i++)
+	{
+		char outfile[256] = "";
+		sprintf(outfile, "%s/%d", OUTDIR, item);
+
+		void *test = narc_load_file(narc, i);
+		if (nitro_get_magic(test) == (magic_t)'NCGR'){
+			ncgr = test;
+		}
+		else if (nitro_get_magic(test) == (magic_t)'NCLR'){
+			printf("%d \n", item);
+			item++;
+			nclr = test;
+			//ncer_dump(ncer, NULL);
+
+			struct dim dim;
+			ncgr_get_dim(ncgr, &dim);
+
+			//warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+
+			struct image image = {
+				.palette = nclr_get_palette(nclr, 0),
+				.pixels = buffer_alloc(32*32),
+				.dim = {32,32},
+			};
+
+			struct coords offset = {16, 16};
+			ncer_draw_cell(ncer, 0, ncgr, &image, offset);
+			
+			write_sprite(&image, outfile);
+		}
+	}
+	
+	nitro_free(ncgr);
+	FREE(ncgr);
+	nitro_free(ncer);
+	FREE(ncer);
+	nitro_free(nclr);
+	FREE(nclr);
+
+	exit(EXIT_SUCCESS);
+}
+
+static void
 dump_ncer(void)
 {
 	struct NCER *ncer = open_nitro("venu.ncer", 'NCER');
@@ -958,8 +1029,6 @@ int
 main(int argc, char *argv[])
 {
 	UNUSED(argc);
-	UNUSED(argv);
-
 	//list();
 	//rip_sprites();
 	//rip_bw_sprites();
@@ -971,37 +1040,45 @@ main(int argc, char *argv[])
 	//bwrip_icon();
 	//dump_ncer();
 	//render_ncer();
-	switch(*argv[1]) 
+	int i;
+	sscanf(argv[1], "%d", &i);
+	switch(i) 
 	{ 
-		case '1': 
+		case 1: 
 			rip_sprites();
 			break;
-		case '2': 
+		case 2: 
 			rip_bw_sprites();
 			break;
-		case '3': 
+		case 3: 
 			rip_bw_trainers();
 			break;
-		case '4': 
+		case 4: 
 			rip_trainers();
 			break;
-		case '5': 
+		case 5: 
 			rip_trainers2();
 			break;
-		case '6': 
+		case 6: 
 			rip_footprint();
 			break;
-		case '7': 
+		case 7: 
 			rip_icon();
 			break;
-		case '8': 
+		case 8: 
 			bwrip_icon();
 			break;
-		case '9': 
+		case 9: 
 			bw2rip_icon();
+			break;
+		case 10: 
+			rip_item_icon();
 			break;
 		default:
 			list();
 			break;
 	} 
 }
+
+//todo: add item icon ripping.
+//expose nitro format lookup so you can:
