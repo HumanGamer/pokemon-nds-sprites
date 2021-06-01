@@ -648,7 +648,7 @@ rip_trainers2(void)
 
 /* for d/p/pt */
 static void
-rip_textbox(void)
+rip_textbox_dppt(void)
 {
 	#define OUTDIR "./Out/winFrame"
 	#define FILENAME "./Resources/Narcs/winframe.narc"
@@ -666,6 +666,55 @@ rip_textbox(void)
 		assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
 
 		struct NCLR *nclr = narc_load_file(narc, n+23);
+		assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
+
+		image.palette = nclr_get_palette(nclr, 0);	
+
+		nitro_free(nclr);
+		FREE(nclr);
+
+		image.pixels = ncgr_get_pixels(ncgr);
+		if (image.pixels == NULL) {
+			warn("Error ripping %s.", outfile);
+			continue; // leak
+		}
+
+		ncgr_get_dim(ncgr, &image.dim);
+
+		nitro_free(ncgr);
+		FREE(ncgr);
+
+		write_sprite(&image, outfile);
+
+		FREE(image.pixels);
+		FREE(image.palette->colors);
+		FREE(image.palette);
+	}
+
+	printf("done\n");
+	exit(EXIT_SUCCESS);
+}
+
+/* for hgss */
+static void
+rip_textbox_hgss(void)
+{
+	#define OUTDIR "./Out/winFrame"
+	#define FILENAME "./Resources/Narcs/winframe.narc"
+	struct NARC *narc = open_narc(FILENAME);
+	char outfile[256] = "";
+
+	struct image image = {};
+
+	MKDIR("");
+
+	for (int n = 2; n <= 21; n++) {
+		sprintf(outfile, "%s/%d", OUTDIR, n-2);
+
+		struct NCGR *ncgr = narc_load_file(narc, n);
+		assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
+
+		struct NCLR *nclr = narc_load_file(narc, n+24);
 		assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
 
 		image.palette = nclr_get_palette(nclr, 0);	
@@ -1124,7 +1173,10 @@ main(int argc, char *argv[])
 			rip_item_icon();
 			break;
 		case 11: 
-			rip_textbox();
+			rip_textbox_dppt();
+			break;
+		case 12: 
+			rip_textbox_hgss();
 			break;
 		default:
 			list();
