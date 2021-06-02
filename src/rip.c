@@ -183,7 +183,7 @@ rip_sprites(void)
 		{"female", "shiny/female"},
 		{"", "shiny"},
 	};
-
+	MKDIR("")
 	MKDIR("female")
 	MKDIR("shiny")
 	MKDIR("shiny/female")
