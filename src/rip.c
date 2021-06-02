@@ -792,6 +792,88 @@ rip_footprint(void)
 }
 
 static void
+rip_trainer(void)
+{
+	#define FILENAME "./Resources/Narcs/trfgra.narc"
+	#define FILENAME2 "./Resources/Narcs/trbgra.narc"
+	#define OUTDIR "./Out/Trainers"
+	#define OUTDIR2 "./Out/Trainers/Back"
+	MKDIR("");
+	MKDIR("Back");
+
+	for (int time = 0; time < 2; time++){
+		struct NARC *narc = open_narc(FILENAME);
+		if (time == 1){
+			narc = open_narc(FILENAME2);
+		}
+		int trainer_count = narc_get_file_count(narc) / 5;
+		
+		for (int i = 0; i < trainer_count; i++){
+
+			struct NCER *ncer = narc_load_file(narc, i * 5 + 2);
+			assert(nitro_get_magic(ncer) == (magic_t)'NCER');
+
+			struct NCLR *nclr = narc_load_file(narc, i * 5 + 1);
+			assert(nitro_get_magic(nclr) == (magic_t)'NCLR');
+
+			struct NCGR *ncgr = narc_load_file(narc, i * 5);
+			assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
+
+			char outfile[256] = "";
+			if (time == 1){
+				sprintf(outfile, "%s/%d", OUTDIR2, i);
+			}else{
+				sprintf(outfile, "%s/%d", OUTDIR, i);
+			}
+
+			//ncer_dump(ncer, NULL);
+
+			struct dim dim;
+			ncgr_get_dim(ncgr, &dim);
+
+			//warn("ncer.dim = {.width=%u, .height=%u}", dim.width, dim.height);
+
+			const int frames = ncer_get_cell_count(ncer);
+			const int size = 80*frames;
+			int size2 = 80;
+			if (time == 1){
+				size2 = 128;
+			}
+
+			struct image image = {
+				.palette = nclr_get_palette(nclr, 0),
+				.pixels = buffer_alloc(size2*size),
+				.dim = {size,size2},
+			};
+			
+			for (int t = 1; t <= frames; t++){
+				if (i == 106 && t == 1 && time == 0){
+					size2 = 112;
+				}else if(i == 106 && t != 1){
+					size2 = 80;
+				}else if(time == 0){
+					size2 = 80;
+				}else if(time == 1){
+					size2 = 128;
+				}
+				//Trainer 106 in HGSS doesn't properly show the 1st frame as it's cut off due to the anim - just move it forward 16 px
+				//DPPt has only 104 trainers so it will never be "wrong" for DPPt
+				struct coords offset = {size2/2, (80*t) - 40};
+				ncer_draw_cell(ncer, t-1, ncgr, &image, offset);
+			}
+
+
+			write_sprite(&image, outfile);
+		}
+	}
+	
+
+	
+
+	exit(EXIT_SUCCESS);
+}
+
+static void
 rip_icon(void)
 {
 
@@ -1177,6 +1259,9 @@ main(int argc, char *argv[])
 			break;
 		case 12: 
 			rip_textbox_hgss();
+			break;
+		case 13: 
+			rip_trainer();
 			break;
 		default:
 			list();

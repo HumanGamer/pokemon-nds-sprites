@@ -371,7 +371,8 @@ render(struct NCER *self, int index, struct NCGR *ncgr, struct image *image, str
 
 	for (int i = 0; i < cell->obj_count; i++) {
 		struct OBJ *obj = &objs[i];
-
+		// tile_index is technically increased by hex 32 or decimal 50 once it gets to the next frame
+		obj->tile_index = obj->tile_index + (index * 50);
 		/*if(obj->rs_mode == 1) {
 			warn("transform, not doubled");
 		} else if (!(obj->rs_mode & 1)) {
