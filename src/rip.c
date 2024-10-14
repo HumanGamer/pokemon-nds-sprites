@@ -391,6 +391,128 @@ rip_bw_sprites(void)
 }
 
 static void
+rip_bw_beta_sprites(void)
+{
+	#define FILENAME "./Resources/Narcs/pokegra-w.narc"
+	#define OUTDIR "./Out/Sprites"
+	struct NARC *narc = open_narc(FILENAME);
+	struct NCER *ncer = open_nitro("./Resources/bw-pokemon.ncer", 'NCER');
+
+	char outfile[256] = "";
+
+	const struct sprite_dirs {
+		const char *normal;
+		const char *shiny;
+	} dirs[] = {
+		{"", "shiny"},
+		{"female", "shiny/female"},
+		{"back", "back/shiny"},
+		{"back/female", "back/shiny/female"},
+	};
+
+	MKDIR("")
+	MKDIR("female")
+	MKDIR("shiny")
+	MKDIR("shiny/female")
+	MKDIR("back")
+	MKDIR("back/female")
+	MKDIR("back/shiny")
+	MKDIR("back/shiny/female")
+
+	struct image image = {};
+
+	for (int n = 0; n <= 711; n++) {
+		struct NCLR *normal_nclr = narc_load_file(narc, n*20 + 18);
+		struct NCLR *shiny_nclr = narc_load_file(narc, n*20 + 19);
+
+		if (normal_nclr == NULL || shiny_nclr == NULL) {
+			if (errno) perror(NULL);
+			else warn("Error reading palettes.");
+			exit(EXIT_FAILURE);
+		}
+
+		assert(nitro_get_magic(normal_nclr) == (magic_t)'NCLR');
+		assert(nitro_get_magic(shiny_nclr) == (magic_t)'NCLR');
+
+		struct palette *normal_palette = nclr_get_palette(normal_nclr, 0);
+		struct palette *shiny_palette = nclr_get_palette(shiny_nclr, 0);
+
+		nitro_free(normal_nclr);
+		nitro_free(shiny_nclr);
+
+		FREE(normal_nclr);
+		FREE(shiny_nclr);
+
+		if (normal_palette == NULL || shiny_palette == NULL) {
+			if (errno) perror(NULL);
+			else warn("Error loading palettes.");
+			exit(EXIT_FAILURE);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			const struct sprite_dirs *d = &dirs[i];
+
+			struct NCGR *ncgr;
+			int index = 0;
+			switch (i) {
+			case 0: case 1: index = n * 20 + i; break;
+			case 2: case 3: index = n * 20 + 9 + (i - 2); break;
+			}
+			if (narc_get_file_size(narc, index) == 0) {
+				// this is fine
+				continue;
+			}
+			ncgr = narc_load_file(narc, index);
+			if (ncgr == NULL) {
+				warn("error getting file %d", index);
+				continue;
+			}
+
+			assert(nitro_get_magic(ncgr) == (magic_t)'NCGR');
+
+			sprintf(outfile, "%s/%s/%d", OUTDIR, d->normal, n);
+
+			ncgr_get_dim(ncgr, &image.dim);
+
+			image.pixels = ncgr_get_pixels(ncgr);//buffer_alloc(image.dim.height * image.dim.width);
+			if (image.pixels == NULL) {
+				warn("Error ripping %s.", outfile);
+				continue;
+			}
+
+			struct coords offset = {0,0};
+			//if (ncer_draw_cell(ncer, 0, ncgr, &image, offset)) {
+			//	warn("error drawing cell");
+			//}
+			/* if (ncer_draw_boxes(ncer, 0, &image, offset)) {
+				warn("error drawing boxes");
+			} */
+
+			nitro_free(ncgr);
+			FREE(ncgr);
+
+			image.palette = normal_palette;
+			write_sprite(&image, outfile);
+
+			sprintf(outfile, "%s/%s/%d", OUTDIR, d->shiny, n);
+			image.palette = shiny_palette;
+			write_sprite(&image, outfile);
+
+			FREE(image.pixels);
+		}
+
+		FREE(normal_palette->colors);
+		FREE(shiny_palette->colors);
+
+		FREE(normal_palette);
+		FREE(shiny_palette);
+	}
+
+	printf("done\n");
+	exit(EXIT_SUCCESS);
+}
+
+static void
 rip_bw_trainers(void)
 {
 	#define OUTDIR "./Out/Trainers"
@@ -1262,6 +1384,9 @@ main(int argc, char *argv[])
 			break;
 		case 13: 
 			rip_trainer();
+			break;
+		case 14: 
+			rip_bw_beta_sprites();
 			break;
 		default:
 			list();
